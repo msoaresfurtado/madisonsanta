@@ -12,6 +12,11 @@
   <!-- Papa Parse for CSV parsing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   
+  <!-- Fun Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  
   <style>
     * {
       margin: 0;
@@ -20,34 +25,44 @@
     }
     
     body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: linear-gradient(180deg, #1e3a5f 0%, #0f2744 100%);
+      font-family: 'Nunito', system-ui, sans-serif;
+      background: linear-gradient(180deg, #1a4731 0%, #14532d 50%, #0f3d22 100%);
       min-height: 100vh;
       color: #333;
+    }
+    
+    .christmas-font {
+      font-family: 'Mountains of Christmas', cursive;
     }
     
     /* Snow animation */
     .snowflake {
       position: fixed;
-      color: rgba(255,255,255,0.8);
+      color: #fff;
       pointer-events: none;
       z-index: 1;
       animation: snow linear infinite;
+      text-shadow: 0 0 5px rgba(255,255,255,0.8);
     }
     
     @keyframes snow {
-      0% { transform: translateY(-10px) rotate(0deg); }
-      100% { transform: translateY(100vh) rotate(360deg); }
+      0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0.6; }
     }
     
     @keyframes glow {
-      0%, 100% { box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 30px rgba(251,191,36,0.4); }
-      50% { box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 50px rgba(251,191,36,0.7); }
+      0%, 100% { box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(255,215,0,0.4); }
+      50% { box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 60px rgba(255,215,0,0.7); }
     }
     
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
+      50% { transform: translateY(-8px); }
+    }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
     
     @keyframes spin {
@@ -55,12 +70,54 @@
       100% { transform: rotate(360deg); }
     }
     
+    @keyframes sway {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+    
+    /* Decorative lights */
+    .lights {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 20px;
+      display: flex;
+      justify-content: space-around;
+      z-index: 5;
+      padding: 0 10px;
+    }
+    
+    .light {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-top: 5px;
+      animation: twinkle 1s ease-in-out infinite;
+    }
+    
+    .light:nth-child(4n+1) { background: #ef4444; animation-delay: 0s; }
+    .light:nth-child(4n+2) { background: #22c55e; animation-delay: 0.25s; }
+    .light:nth-child(4n+3) { background: #3b82f6; animation-delay: 0.5s; }
+    .light:nth-child(4n) { background: #eab308; animation-delay: 0.75s; }
+    
     /* Header */
     header {
       position: relative;
       z-index: 10;
       text-align: center;
-      padding: 28px 16px 20px;
+      padding: 40px 16px 20px;
+    }
+    
+    .hero-image {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid #fbbf24;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 30px rgba(255,215,0,0.3);
+      margin-bottom: 16px;
+      animation: sway 3s ease-in-out infinite;
     }
     
     .title-badge {
@@ -68,42 +125,47 @@
       align-items: center;
       gap: 12px;
       background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
-      padding: 14px 32px;
+      padding: 16px 36px;
       border-radius: 50px;
-      border: 3px solid #fbbf24;
+      border: 4px solid #fbbf24;
       animation: glow 2s ease-in-out infinite;
     }
     
     .title-badge h1 {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       color: #fff;
       font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
     
     .title-badge .santa-icon {
-      font-size: 2rem;
+      font-size: 2.2rem;
       animation: bounce 1s ease-in-out infinite;
     }
     
     .subtitle {
-      color: rgba(255,255,255,0.8);
-      margin-top: 12px;
-      font-size: 1rem;
+      color: #bbf7d0;
+      margin-top: 14px;
+      font-size: 1.1rem;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
     }
     
     .counter {
       display: inline-block;
       background: rgba(255,255,255,0.15);
-      padding: 8px 20px;
-      border-radius: 20px;
-      margin-top: 10px;
+      backdrop-filter: blur(8px);
+      padding: 10px 24px;
+      border-radius: 30px;
+      margin-top: 12px;
       color: #fff;
+      border: 2px solid rgba(255,255,255,0.2);
     }
     
     .counter .count {
       color: #fbbf24;
       font-weight: 700;
-      font-size: 1.3rem;
+      font-size: 1.5rem;
+      text-shadow: 0 0 10px rgba(251,191,36,0.5);
     }
     
     /* Main content */
@@ -118,19 +180,20 @@
     /* Map */
     .map-container {
       background: #fff;
-      border-radius: 16px;
+      border-radius: 20px;
       overflow: hidden;
       box-shadow: 0 12px 40px rgba(0,0,0,0.3);
-      border: 4px solid #dc2626;
+      border: 5px solid #dc2626;
       margin-bottom: 20px;
     }
     
     .map-header {
-      padding: 12px 16px;
-      background: #fef2f2;
-      border-bottom: 2px solid #fecaca;
-      font-weight: 600;
+      padding: 14px 18px;
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      border-bottom: 3px solid #fecaca;
+      font-weight: 700;
       color: #991b1b;
+      font-size: 1.05rem;
     }
     
     #map {
@@ -156,12 +219,8 @@
     }
     
     .spinner {
-      width: 50px;
-      height: 50px;
-      border: 4px solid #fecaca;
-      border-top-color: #dc2626;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
+      font-size: 3rem;
+      animation: bounce 0.6s ease-in-out infinite;
       margin-bottom: 12px;
     }
     
@@ -173,14 +232,15 @@
     /* Selected santa card */
     .selected-santa {
       background: linear-gradient(135deg, #fef2f2 0%, #fff 100%);
-      border-radius: 12px;
-      padding: 16px;
+      border-radius: 16px;
+      padding: 18px;
       margin-bottom: 16px;
-      border: 2px solid #fca5a5;
+      border: 3px solid #fca5a5;
       display: none;
       align-items: center;
       gap: 14px;
       flex-wrap: wrap;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
     }
     
     .selected-santa.visible {
@@ -188,7 +248,8 @@
     }
     
     .selected-santa .santa-emoji {
-      font-size: 2.5rem;
+      font-size: 3rem;
+      animation: bounce 1s ease-in-out infinite;
     }
     
     .selected-santa .info {
@@ -199,71 +260,77 @@
     .selected-santa .address {
       font-weight: 700;
       color: #dc2626;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
     }
     
     .selected-santa .submitter {
       color: #666;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
     }
     
     .maps-link {
-      background: #166534;
+      background: linear-gradient(135deg, #166534 0%, #14532d 100%);
       color: #fff;
-      padding: 10px 16px;
-      border-radius: 8px;
+      padding: 12px 18px;
+      border-radius: 25px;
       text-decoration: none;
-      font-weight: 600;
-      font-size: 0.85rem;
+      font-weight: 700;
+      font-size: 0.9rem;
       white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(22,101,52,0.3);
+      transition: transform 0.15s;
     }
     
     .maps-link:hover {
-      background: #14532d;
+      transform: translateY(-2px);
     }
     
     /* Santa list */
     .santa-list {
-      background: rgba(255,255,255,0.95);
-      border-radius: 12px;
-      padding: 16px;
+      background: rgba(255,255,255,0.97);
+      border-radius: 16px;
+      padding: 18px;
       margin-bottom: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
     }
     
     .santa-list h3 {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       color: #166534;
-      font-size: 1rem;
+      font-size: 1.1rem;
     }
     
     .santa-buttons {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
     }
     
     .santa-btn {
       display: flex;
       align-items: center;
       gap: 6px;
-      padding: 8px 12px;
-      background: #f0fdf4;
+      padding: 10px 14px;
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
       border: 2px solid #86efac;
-      border-radius: 20px;
+      border-radius: 25px;
       cursor: pointer;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: #333;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #166534;
       transition: all 0.15s ease;
+      font-family: inherit;
     }
     
     .santa-btn:hover {
-      background: #dcfce7;
+      background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+      transform: translateY(-2px);
     }
     
     .santa-btn.selected {
-      background: #fee2e2;
+      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
       border-color: #dc2626;
+      color: #991b1b;
     }
     
     .no-santas {
@@ -274,41 +341,108 @@
     /* Submit CTA */
     .submit-cta {
       background: linear-gradient(135deg, #fff 0%, #f0fdf4 100%);
-      border-radius: 16px;
-      padding: 24px;
-      border: 3px solid #166534;
+      border-radius: 20px;
+      padding: 28px;
+      border: 4px solid #166534;
       text-align: center;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
     }
     
     .submit-cta h2 {
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       color: #dc2626;
-      font-size: 1.3rem;
+      font-size: 1.5rem;
     }
     
     .submit-cta p {
-      color: #666;
-      margin-bottom: 16px;
+      color: #555;
+      margin-bottom: 18px;
+      font-size: 1.05rem;
     }
     
     .submit-btn {
       display: inline-block;
-      padding: 14px 32px;
-      font-size: 1.1rem;
+      padding: 16px 36px;
+      font-size: 1.15rem;
       font-weight: 700;
       color: #fff;
       background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
       border: none;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(220,38,38,0.3);
+      box-shadow: 0 6px 20px rgba(220,38,38,0.4);
       text-decoration: none;
       transition: transform 0.15s, box-shadow 0.15s;
+      font-family: inherit;
     }
     
     .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(220,38,38,0.5);
+    }
+    
+    /* Buy CTA */
+    .buy-cta {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border-radius: 20px;
+      padding: 24px;
+      border: 4px solid #f59e0b;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    
+    .buy-cta-image {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 3px solid #f59e0b;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .buy-cta-content {
+      flex: 1;
+      min-width: 200px;
+      text-align: left;
+    }
+    
+    .buy-cta h3 {
+      color: #92400e;
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+    }
+    
+    .buy-cta p {
+      color: #78350f;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+    
+    .buy-btn {
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(245,158,11,0.4);
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+      font-family: inherit;
+    }
+    
+    .buy-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(220,38,38,0.4);
+      box-shadow: 0 6px 20px rgba(245,158,11,0.5);
     }
     
     /* Footer */
@@ -316,18 +450,28 @@
       position: relative;
       z-index: 10;
       text-align: center;
-      padding: 20px;
-      color: rgba(255,255,255,0.5);
-      font-size: 0.85rem;
+      padding: 24px;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+    }
+    
+    footer a {
+      color: #86efac;
+      text-decoration: none;
+    }
+    
+    footer a:hover {
+      text-decoration: underline;
     }
     
     /* Leaflet popup styling */
     .santa-popup {
       text-align: center;
+      padding: 4px;
     }
     
     .santa-popup .popup-emoji {
-      font-size: 2rem;
+      font-size: 2.2rem;
       margin-bottom: 8px;
     }
     
@@ -335,6 +479,7 @@
       font-weight: 700;
       color: #dc2626;
       margin-bottom: 4px;
+      font-size: 1rem;
     }
     
     .santa-popup .popup-submitter {
@@ -356,23 +501,51 @@
     .error-message.visible {
       display: block;
     }
+
+    /* Responsive */
+    @media (max-width: 500px) {
+      .title-badge h1 {
+        font-size: 1.3rem;
+      }
+      .hero-image {
+        width: 140px;
+        height: 140px;
+      }
+      .buy-cta-content {
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body>
+  
+  <!-- Christmas lights -->
+  <div class="lights">
+    <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
+    <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
+    <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
+    <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
+    <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
+  </div>
   
   <!-- Snowflakes -->
   <div id="snow-container"></div>
   
   <!-- Header -->
   <header>
-    <div class="title-badge">
+    <img 
+      src="https://i.ytimg.com/vi/Fzty3Wn67mM/maxresdefault.jpg" 
+      alt="Giant 12-foot Inflatable Santa" 
+      class="hero-image"
+    >
+    <div class="title-badge christmas-font">
       <span class="santa-icon">🎅</span>
       <h1>Madison Giant Santa Tracker</h1>
       <span class="santa-icon" style="animation-delay: 0.3s">🎅</span>
     </div>
-    <p class="subtitle">Mapping every glorious 12-foot inflatable in the city!</p>
+    <p class="subtitle">✨ Mapping every glorious 12-foot inflatable Santa in the city! ✨</p>
     <div class="counter">
-      <span class="count" id="santa-count">0</span> Santas spotted!
+      🎄 <span class="count" id="santa-count">0</span> Santas spotted! 🎄
     </div>
   </header>
   
@@ -384,11 +557,11 @@
     
     <!-- Map -->
     <div class="map-container">
-      <div class="map-header">🗺️ Madison, WI — Click a Santa for details</div>
+      <div class="map-header">🗺️ Madison, WI — Click a Santa for details!</div>
       <div id="map">
         <div class="loading-overlay" id="loading">
-          <div class="spinner"></div>
-          <div class="loading-text">Loading Santa sightings...</div>
+          <div class="spinner">🎅</div>
+          <div class="loading-text">Finding Santas...</div>
         </div>
       </div>
     </div>
@@ -400,7 +573,7 @@
         <div class="address" id="selected-address"></div>
         <div class="submitter" id="selected-submitter"></div>
       </div>
-      <a class="maps-link" id="selected-link" href="#" target="_blank">Open in Maps ↗</a>
+      <a class="maps-link" id="selected-link" href="#" target="_blank">📍 Get Directions</a>
     </div>
     
     <!-- Santa List -->
@@ -413,8 +586,8 @@
     
     <!-- Submit CTA -->
     <div class="submit-cta">
-      <h2>🎅 Spot a Giant Santa?</h2>
-      <p>Help us map all the 12-foot inflatable Santas in Madison!</p>
+      <h2 class="christmas-font">🎅 Spot a Giant Santa?</h2>
+      <p>Help us find ALL the 12-foot inflatable Santas in Madison!</p>
       <a 
         href="https://docs.google.com/forms/d/e/1FAIpQLSeCsUBFgD1AVRr7pJVdaLkMY4WqREYR5rjgcOH6G-lbg5GC8Q/viewform" 
         target="_blank" 
@@ -424,10 +597,31 @@
       </a>
     </div>
     
+    <!-- Buy CTA -->
+    <div class="buy-cta">
+      <img 
+        src="https://i.ytimg.com/vi/Fzty3Wn67mM/maxresdefault.jpg" 
+        alt="12-foot Inflatable Santa" 
+        class="buy-cta-image"
+      >
+      <div class="buy-cta-content">
+        <h3>🛒 Want Your Own Giant Santa?</h3>
+        <p>Join the movement! Get a 12-foot inflatable Santa and put Madison on the map.</p>
+        <a 
+          href="https://www.farmandfleet.com/products/1600701-gemmy-12-inflatable-santa.html" 
+          target="_blank" 
+          class="buy-btn"
+        >
+          🎁 Buy One Here!
+        </a>
+      </div>
+    </div>
+    
   </div>
   
   <footer>
-    Made with ❤️ in Madison, WI • Happy Holidays! 🎄
+    Made with ❤️ in Madison, WI • Happy Holidays! 🎄<br>
+    <small style="opacity: 0.7;">Not affiliated with any Santa inflatable manufacturers 😄</small>
   </footer>
   
   <script>
@@ -504,7 +698,7 @@
           complete: async (results) => {
             console.log('CSV loaded:', results.data);
             
-            // Filter for rows with an address (check multiple possible column names)
+            // Filter for rows with an address
             const rows = results.data.filter(row => {
               const address = row['Address'] || row['address'] || row['ADDRESS'] || '';
               return address.trim() !== '';
@@ -564,13 +758,14 @@
       const santaIcon = L.divIcon({
         className: 'santa-marker',
         html: `<div style="
-          font-size: 28px;
-          filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.3));
+          font-size: 32px;
+          filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.4));
           cursor: pointer;
+          transition: transform 0.2s;
         ">🎅</div>`,
-        iconSize: [30, 30],
-        iconAnchor: [15, 30],
-        popupAnchor: [0, -30]
+        iconSize: [36, 36],
+        iconAnchor: [18, 36],
+        popupAnchor: [0, -36]
       });
       
       santas.forEach(santa => {
@@ -642,15 +837,17 @@
     // ============ SNOW EFFECT ============
     function createSnowflakes() {
       const container = document.getElementById('snow-container');
+      const flakes = ['❄', '❅', '❆', '✻', '✼'];
       
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < 60; i++) {
         const flake = document.createElement('div');
         flake.className = 'snowflake';
-        flake.textContent = '❄';
+        flake.textContent = flakes[Math.floor(Math.random() * flakes.length)];
         flake.style.left = `${Math.random() * 100}%`;
-        flake.style.fontSize = `${6 + Math.random() * 12}px`;
-        flake.style.animationDuration = `${3 + Math.random() * 7}s`;
+        flake.style.fontSize = `${8 + Math.random() * 16}px`;
+        flake.style.animationDuration = `${4 + Math.random() * 8}s`;
         flake.style.animationDelay = `${Math.random() * 5}s`;
+        flake.style.opacity = 0.6 + Math.random() * 0.4;
         container.appendChild(flake);
       }
     }
