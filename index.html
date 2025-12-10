@@ -201,17 +201,18 @@
       display: inline-block;
       background: rgba(255,255,255,0.15);
       backdrop-filter: blur(8px);
-      padding: 10px 24px;
+      padding: 12px 28px;
       border-radius: 30px;
       margin-top: 12px;
       color: #fff;
       border: 2px solid rgba(255,255,255,0.2);
+      font-size: 1.2rem;
     }
     
     .counter .count {
       color: #fbbf24;
       font-weight: 700;
-      font-size: 1.5rem;
+      font-size: 2rem;
       text-shadow: 0 0 10px rgba(251,191,36,0.5);
     }
     
@@ -330,59 +331,6 @@
     
     .maps-link:hover {
       transform: translateY(-2px);
-    }
-    
-    /* Santa list */
-    .santa-list {
-      background: rgba(255,255,255,0.97);
-      border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 16px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-    }
-    
-    .santa-list h3 {
-      margin-bottom: 14px;
-      color: #166534;
-      font-size: 1.1rem;
-    }
-    
-    .santa-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    
-    .santa-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 14px;
-      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-      border: 2px solid #86efac;
-      border-radius: 25px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #166534;
-      transition: all 0.15s ease;
-      font-family: inherit;
-    }
-    
-    .santa-btn:hover {
-      background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-      transform: translateY(-2px);
-    }
-    
-    .santa-btn.selected {
-      background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-      border-color: #dc2626;
-      color: #991b1b;
-    }
-    
-    .no-santas {
-      color: #666;
-      font-style: italic;
     }
     
     /* Submit CTA */
@@ -627,14 +575,6 @@
       <a class="maps-link" id="selected-link" href="#" target="_blank">📍 Get Directions</a>
     </div>
     
-    <!-- Santa List -->
-    <div class="santa-list">
-      <h3>📍 All Sightings</h3>
-      <div class="santa-buttons" id="santa-buttons">
-        <span class="no-santas">Loading...</span>
-      </div>
-    </div>
-    
     <!-- Submit CTA -->
     <div class="submit-cta">
       <h2 class="christmas-font">🎅 Spot a Giant Santa?</h2>
@@ -869,31 +809,11 @@
       document.getElementById('selected-submitter').textContent = `Spotted by ${santa.submitter}`;
       document.getElementById('selected-link').href = `https://www.google.com/maps/search/?api=1&query=${santa.lat},${santa.lng}`;
       
-      document.querySelectorAll('.santa-btn').forEach(btn => {
-        btn.classList.toggle('selected', parseInt(btn.dataset.id) === santa.id);
-      });
-      
       map.setView([santa.lat, santa.lng], 15);
     }
     
-    // ============ RENDER SANTA BUTTONS ============
-    function renderSantaButtons() {
-      const container = document.getElementById('santa-buttons');
-      container.innerHTML = '';
-      
-      if (santas.length === 0) {
-        container.innerHTML = '<span class="no-santas">No Santas yet — be the first to submit one!</span>';
-      } else {
-        santas.forEach(santa => {
-          const btn = document.createElement('button');
-          btn.className = 'santa-btn';
-          btn.dataset.id = santa.id;
-          btn.innerHTML = `🎅 ${santa.address}`;
-          btn.onclick = () => selectSanta(santa);
-          container.appendChild(btn);
-        });
-      }
-      
+    // ============ UPDATE COUNTER ============
+    function updateCounter() {
       document.getElementById('santa-count').textContent = santas.length;
     }
     
@@ -930,11 +850,11 @@
       try {
         santas = await loadSantasFromSheet();
         updateMarkers();
-        renderSantaButtons();
+        updateCounter();
       } catch (err) {
         console.error('Failed to load santas:', err);
         showError('Could not load Santa sightings. Please try refreshing the page.');
-        renderSantaButtons();
+        updateCounter();
       }
       
       document.getElementById('loading').classList.add('hidden');
