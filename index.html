@@ -96,6 +96,11 @@
       50% { transform: rotate(3deg); }
     }
     
+    @keyframes pulsate {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.10); }
+    }
+    
     /* Sparkle effect for hover */
     @keyframes sparkle {
       0%, 100% { 
@@ -153,7 +158,7 @@
       right: 0;
       height: 45px;
       z-index: 5;
-      overflow: hidden;
+      overflow: visible;
     }
     
     .lights-cord {
@@ -161,8 +166,10 @@
       top: 8px;
       left: -20px;
       right: -20px;
+      width: calc(100% + 40px);
       height: 40px;
       pointer-events: none;
+      z-index: 1;
     }
     
     .cord-path {
@@ -181,6 +188,7 @@
       justify-content: space-around;
       align-items: flex-start;
       padding: 0 10px;
+      z-index: 2;
     }
     
     .light-bulb {
@@ -355,6 +363,8 @@
       font-weight: 700;
       font-size: 2rem;
       text-shadow: 0 0 10px rgba(251,191,36,0.5);
+      display: inline-block;
+      animation: pulsate 2s ease-in-out infinite;
     }
     
     /* Main content */
@@ -644,9 +654,8 @@
     .suggestion-box p {
       color: rgba(255,255,255,0.9);
       margin: 0;
-      font-size: 1.1rem;
-      font-family: 'Mountains of Christmas', cursive;
-      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.3px;
     }
     
     .suggestion-box a {
@@ -739,8 +748,8 @@
   
   <!-- Christmas lights with cord -->
   <div class="lights-container">
-    <svg class="lights-cord" viewBox="0 0 1200 45" preserveAspectRatio="none">
-      <path class="cord-path" d="M-20,8 Q30,25 60,18 Q90,11 120,22 Q150,33 180,20 Q210,7 240,24 Q270,41 300,18 Q330,5 360,22 Q390,39 420,18 Q450,5 480,24 Q510,43 540,18 Q570,3 600,22 Q630,41 660,18 Q690,5 720,24 Q750,43 780,18 Q810,3 840,22 Q870,41 900,18 Q930,5 960,24 Q990,43 1020,18 Q1050,3 1080,22 Q1110,41 1140,18 Q1170,5 1220,20" />
+    <svg class="lights-cord" viewBox="0 0 2000 45" preserveAspectRatio="none">
+      <path class="cord-path" d="M-20,8 Q30,25 60,18 Q90,11 120,22 Q150,33 180,20 Q210,7 240,24 Q270,41 300,18 Q330,5 360,22 Q390,39 420,18 Q450,5 480,24 Q510,43 540,18 Q570,3 600,22 Q630,41 660,18 Q690,5 720,24 Q750,43 780,18 Q810,3 840,22 Q870,41 900,18 Q930,5 960,24 Q990,43 1020,18 Q1050,3 1080,22 Q1110,41 1140,18 Q1170,5 1200,24 Q1230,43 1260,18 Q1290,3 1320,22 Q1350,41 1380,18 Q1410,5 1440,24 Q1470,43 1500,18 Q1530,3 1560,22 Q1590,41 1620,18 Q1650,5 1680,24 Q1710,43 1740,18 Q1770,3 1800,22 Q1830,41 1860,18 Q1890,5 1920,24 Q1950,43 2020,18" />
     </svg>
     <div class="lights">
       <div class="light-bulb" style="--bulb-offset: 18px"><div class="light"></div></div>
@@ -760,6 +769,22 @@
       <div class="light-bulb" style="--bulb-offset: 18px"><div class="light"></div></div>
       <div class="light-bulb" style="--bulb-offset: 4px"><div class="light"></div></div>
       <div class="light-bulb" style="--bulb-offset: 20px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 10px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 18px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 6px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 22px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 8px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 18px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 4px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 20px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 10px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 22px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 6px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 18px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 8px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 20px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 4px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 22px"><div class="light"></div></div>
       <div class="light-bulb" style="--bulb-offset: 10px"><div class="light"></div></div>
       <div class="light-bulb" style="--bulb-offset: 18px"><div class="light"></div></div>
       <div class="light-bulb" style="--bulb-offset: 6px"><div class="light"></div></div>
@@ -788,7 +813,7 @@
     </div>
     <p class="subtitle">✨ Mapping every glorious 12-foot inflatable Santa in the city! ✨</p>
     <div class="counter">
-      🎄 <span class="count" id="santa-count">0</span> Santas spotted! 🎄
+      <span style="font-size: 1.4rem;">🎄</span> <span class="count" id="santa-count">0</span> Santas spotted! <span style="font-size: 1.4rem;">🎄</span>
     </div>
   </header>
   
@@ -877,7 +902,7 @@
   </div>
   
   <footer>
-    Made with ❤️ in Madison, WI • Happy Holidays! 🎄<br>
+    Made with ❤️ in Madison, WI • Happy Holidays! <span style="font-size: 1.1rem;">🎄</span><br>
     <small style="opacity: 0.7;">Not affiliated with any Santa inflatable manufacturers 😄</small>
   </footer>
   
