@@ -5,14 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Madison Giant Santa Tracker 🎅</title>
   
-  <!-- Leaflet CSS & JS for interactive maps -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  
-  <!-- Papa Parse for CSV parsing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   
-  <!-- Fun Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -35,7 +31,6 @@
       font-family: 'Mountains of Christmas', cursive;
     }
     
-    /* Snow animation with horizontal drift - BEHIND content */
     #snow-container {
       position: fixed;
       top: 0;
@@ -101,7 +96,6 @@
       50% { transform: scale(1.12); }
     }
     
-    /* Sparkle effect for hover */
     @keyframes sparkle {
       0%, 100% { 
         opacity: 0;
@@ -150,7 +144,6 @@
       transform: translateX(-50%);
     }
     
-    /* Christmas lights with cord */
     .lights-container {
       position: fixed;
       top: 0;
@@ -196,6 +189,14 @@
       margin-top: var(--bulb-offset, 12px);
     }
     
+    .bulb-offset-4 { --bulb-offset: 4px; }
+    .bulb-offset-6 { --bulb-offset: 6px; }
+    .bulb-offset-8 { --bulb-offset: 8px; }
+    .bulb-offset-10 { --bulb-offset: 10px; }
+    .bulb-offset-18 { --bulb-offset: 18px; }
+    .bulb-offset-20 { --bulb-offset: 20px; }
+    .bulb-offset-22 { --bulb-offset: 22px; }
+    
     .light-bulb::before {
       content: '';
       position: absolute;
@@ -237,7 +238,6 @@
       animation-delay: 1.2s; 
     }
     
-    /* Header */
     header {
       position: relative;
       z-index: 10;
@@ -259,7 +259,6 @@
       animation: sway 3s ease-in-out infinite;
     }
     
-    /* Ornament cap */
     .ornament-container::before {
       content: '';
       position: absolute;
@@ -274,7 +273,6 @@
       z-index: 2;
     }
     
-    /* Ornament loop */
     .ornament-container::after {
       content: '';
       position: absolute;
@@ -336,6 +334,10 @@
       animation: bounce 1s ease-in-out infinite;
     }
     
+    .santa-icon-delayed {
+      animation-delay: 0.3s;
+    }
+    
     .subtitle {
       color: #bbf7d0;
       margin-top: 14px;
@@ -343,7 +345,6 @@
       text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
     }
     
-    /* Frosted glass counter */
     .counter {
       display: inline-block;
       background: rgba(255,255,255,0.15);
@@ -367,7 +368,10 @@
       animation: pulsate 2s ease-in-out infinite;
     }
     
-    /* Main content */
+    .emoji-large {
+      font-size: 2.2rem;
+    }
+    
     .container {
       position: relative;
       z-index: 10;
@@ -376,7 +380,6 @@
       padding: 0 16px 40px;
     }
     
-    /* Map */
     .map-container {
       background: #fff;
       border-radius: 20px;
@@ -411,7 +414,6 @@
       position: relative;
     }
     
-    /* Loading state */
     .loading-overlay {
       position: absolute;
       inset: 0;
@@ -438,7 +440,6 @@
       font-weight: 600;
     }
     
-    /* Selected santa card */
     .selected-santa {
       background: linear-gradient(135deg, #fef2f2 0%, #fff 100%);
       border-radius: 16px;
@@ -507,7 +508,6 @@
       transform: translateY(-2px);
     }
     
-    /* Submit CTA */
     .submit-cta {
       background: linear-gradient(135deg, #fff 0%, #f0fdf4 100%);
       border-radius: 20px;
@@ -565,7 +565,6 @@
       box-shadow: 0 8px 25px rgba(220,38,38,0.5);
     }
     
-    /* Buy CTA */
     .buy-cta {
       background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
       border-radius: 20px;
@@ -641,7 +640,6 @@
       box-shadow: 0 6px 20px rgba(245,158,11,0.5);
     }
     
-    /* Suggestion box */
     .suggestion-box {
       background: rgba(255,255,255,0.1);
       border-radius: 16px;
@@ -668,7 +666,6 @@
       text-decoration: underline;
     }
     
-    /* Music toggle button */
     .music-toggle {
       position: fixed;
       bottom: 20px;
@@ -703,7 +700,6 @@
       50% { box-shadow: 0 4px 15px rgba(0,0,0,0.3), 0 0 35px rgba(251,191,36,0.6); }
     }
     
-    /* SoundCloud player */
     .soundcloud-player {
       position: fixed;
       bottom: 80px;
@@ -721,7 +717,6 @@
       display: block;
     }
 
-    /* Footer */
     footer {
       position: relative;
       z-index: 10;
@@ -740,7 +735,14 @@
       text-decoration: underline;
     }
     
-    /* Leaflet popup styling */
+    .footer-emoji {
+      font-size: 1.5rem;
+    }
+    
+    .footer-disclaimer {
+      opacity: 0.7;
+    }
+    
     .santa-popup {
       text-align: center;
       padding: 4px;
@@ -763,7 +765,6 @@
       color: #666;
     }
     
-    /* Error message */
     .error-message {
       background: #fee2e2;
       color: #991b1b;
@@ -778,8 +779,14 @@
     .error-message.visible {
       display: block;
     }
+    
+    .santa-marker-icon {
+      font-size: 32px;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.4));
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
 
-    /* Responsive */
     @media (max-width: 500px) {
       .title-badge h1 {
         font-size: 1.3rem;
@@ -796,55 +803,52 @@
 </head>
 <body>
   
-  <!-- Snowflakes - behind content -->
   <div id="snow-container"></div>
   
-  <!-- Christmas lights with cord -->
   <div class="lights-container">
     <svg class="lights-cord" viewBox="0 0 2000 45" preserveAspectRatio="none">
       <path class="cord-path" d="M-20,8 Q30,25 60,18 Q90,11 120,22 Q150,33 180,20 Q210,7 240,24 Q270,41 300,18 Q330,5 360,22 Q390,39 420,18 Q450,5 480,24 Q510,43 540,18 Q570,3 600,22 Q630,41 660,18 Q690,5 720,24 Q750,43 780,18 Q810,3 840,22 Q870,41 900,18 Q930,5 960,24 Q990,43 1020,18 Q1050,3 1080,22 Q1110,41 1140,18 Q1170,5 1200,24 Q1230,43 1260,18 Q1290,3 1320,22 Q1350,41 1380,18 Q1410,5 1440,24 Q1470,43 1500,18 Q1530,3 1560,22 Q1590,41 1620,18 Q1650,5 1680,24 Q1710,43 1740,18 Q1770,3 1800,22 Q1830,41 1860,18 Q1890,5 1920,24 Q1950,43 2020,18" />
     </svg>
     <div class="lights">
-      <div class="light-bulb" style="--bulb-offset: 18px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 10px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 20px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 8px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 22px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 6px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 20px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 4px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 22px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 6px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 20px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 4px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 22px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 8px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 18px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 4px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 20px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 10px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 18px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 6px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 22px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 8px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 18px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 4px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 20px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 10px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 22px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 6px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 18px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 8px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 20px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 4px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 22px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 10px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 18px"><div class="light"></div></div>
-      <div class="light-bulb" style="--bulb-offset: 6px"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-18"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-10"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-20"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-8"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-22"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-6"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-20"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-4"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-22"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-6"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-20"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-4"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-22"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-8"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-18"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-4"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-20"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-10"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-18"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-6"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-22"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-8"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-18"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-4"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-20"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-10"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-22"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-6"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-18"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-8"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-20"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-4"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-22"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-10"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-18"><div class="light"></div></div>
+      <div class="light-bulb bulb-offset-6"><div class="light"></div></div>
     </div>
   </div>
   
-  <!-- Header -->
   <header>
     <div class="header-row">
       <div class="ornament-container">
@@ -861,22 +865,19 @@
         <div class="sparkle"></div>
         <span class="santa-icon">🎅</span>
         <h1>Madison Giant Santa Tracker</h1>
-        <span class="santa-icon" style="animation-delay: 0.3s">🎅</span>
+        <span class="santa-icon santa-icon-delayed">🎅</span>
       </div>
     </div>
     <p class="subtitle">✨ Mapping every glorious 12-foot inflatable Santa in the city! ✨</p>
     <div class="counter">
-      <span style="font-size: 2.2rem;">🎄</span> <span class="count" id="santa-count">0</span> Santas spotted! <span style="font-size: 2.2rem;">🎄</span>
+      <span class="emoji-large">🎄</span> <span class="count" id="santa-count">0</span> Santas spotted! <span class="emoji-large">🎄</span>
     </div>
   </header>
   
-  <!-- Main Content -->
   <div class="container">
     
-    <!-- Error message -->
     <div class="error-message" id="error-message"></div>
     
-    <!-- Map -->
     <div class="map-container sparkle-container">
       <div class="sparkle"></div>
       <div class="sparkle"></div>
@@ -891,7 +892,6 @@
       </div>
     </div>
     
-    <!-- Selected Santa Detail -->
     <div class="selected-santa sparkle-container" id="selected-santa">
       <div class="sparkle"></div>
       <div class="sparkle"></div>
@@ -903,7 +903,6 @@
       <a class="maps-link" id="selected-link" href="#" target="_blank">📍 Get Directions</a>
     </div>
     
-    <!-- Submit CTA -->
     <div class="submit-cta sparkle-container">
       <div class="sparkle"></div>
       <div class="sparkle"></div>
@@ -919,7 +918,6 @@
       </a>
     </div>
     
-    <!-- Buy CTA -->
     <div class="buy-cta sparkle-container">
       <div class="sparkle"></div>
       <div class="sparkle"></div>
@@ -941,7 +939,6 @@
       </div>
     </div>
     
-    <!-- Suggestion Box -->
     <div class="suggestion-box">
       <p>
         💡 Have a suggestion for this site? 
@@ -955,16 +952,14 @@
   </div>
   
   <footer>
-    Made with ❤️ in Madison, WI • Happy Holidays! <span style="font-size: 1.5rem;">🎄</span><br>
-    <small style="opacity: 0.7;">Not affiliated with any Santa inflatable manufacturers 😄</small>
+    Made with ❤️ in Madison, WI • Happy Holidays! <span class="footer-emoji">🎄</span><br>
+    <small class="footer-disclaimer">Not affiliated with any Santa inflatable manufacturers 😄</small>
   </footer>
   
-  <!-- Music toggle button -->
   <button class="music-toggle" id="music-toggle" title="Toggle Music">
     🎵
   </button>
   
-  <!-- Background music - SoundCloud embed -->
   <div class="soundcloud-player" id="soundcloud-player">
     <iframe 
       id="sc-widget"
@@ -978,16 +973,13 @@
   </div>
   
   <script>
-    // ============ CONFIGURATION ============
     const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRdG78w6csiqzQtWUCGQGTCCaOSB_WDrVk2yGeITPcoXWi98jtQZmcU6WcIU_cQ5uxA0xCEcgUwdY5i/pub?output=csv';
     
-    // ============ STATE ============
     let santas = [];
     let selectedSanta = null;
     let map;
     let markers = [];
     
-    // ============ LOAD DATA FROM GOOGLE SHEET ============
     async function loadSantasFromSheet() {
       return new Promise((resolve, reject) => {
         Papa.parse(GOOGLE_SHEET_CSV_URL, {
@@ -1010,7 +1002,6 @@
       });
     }
     
-    // ============ INITIALIZE MAP ============
     function initMap() {
       map = L.map('map').setView([43.073, -89.40], 12);
       
@@ -1019,19 +1010,13 @@
       }).addTo(map);
     }
     
-    // ============ UPDATE MARKERS ============
     function updateMarkers() {
       markers.forEach(m => map.removeLayer(m));
       markers = [];
       
       const santaIcon = L.divIcon({
         className: 'santa-marker',
-        html: `<div style="
-          font-size: 32px;
-          filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.4));
-          cursor: pointer;
-          transition: transform 0.2s;
-        ">🎅</div>`,
+        html: '<div class="santa-marker-icon">🎅</div>',
         iconSize: [36, 36],
         iconAnchor: [18, 36],
         popupAnchor: [0, -36]
@@ -1058,7 +1043,6 @@
       }
     }
     
-    // ============ SELECT SANTA ============
     function selectSanta(santa) {
       selectedSanta = santa;
       
@@ -1071,19 +1055,16 @@
       map.setView([santa.lat, santa.lng], 15);
     }
     
-    // ============ UPDATE COUNTER ============
     function updateCounter() {
       document.getElementById('santa-count').textContent = santas.length;
     }
     
-    // ============ SHOW ERROR ============
     function showError(message) {
       const el = document.getElementById('error-message');
       el.textContent = message;
       el.classList.add('visible');
     }
     
-    // ============ SNOW EFFECT WITH HORIZONTAL DRIFT ============
     function createSnowflakes() {
       const container = document.getElementById('snow-container');
       const flakes = ['❄', '❅', '❆', '✻', '✼'];
@@ -1101,7 +1082,6 @@
       }
     }
     
-    // ============ MUSIC TOGGLE ============
     function setupMusicToggle() {
       const btn = document.getElementById('music-toggle');
       const player = document.getElementById('soundcloud-player');
@@ -1118,7 +1098,6 @@
       });
     }
     
-    // ============ INIT ============
     document.addEventListener('DOMContentLoaded', async () => {
       initMap();
       createSnowflakes();
