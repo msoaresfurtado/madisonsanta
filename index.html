@@ -666,6 +666,106 @@
       text-decoration: underline;
     }
     
+    /* Photo Gallery Styles */
+    .photo-gallery {
+      background: linear-gradient(135deg, #fef2f2 0%, #fff 100%);
+      border-radius: 20px;
+      padding: 24px;
+      border: 4px solid #dc2626;
+      text-align: center;
+      margin-top: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .photo-gallery h3 {
+      color: #dc2626;
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+    }
+    
+    .gallery-container {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      aspect-ratio: 4/3;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 3px solid #fbbf24;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    
+    .gallery-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.8s ease-in-out;
+    }
+    
+    .gallery-image.active {
+      opacity: 1;
+    }
+    
+    .gallery-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    
+    .gallery-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #fecaca;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    
+    .gallery-dot:hover {
+      transform: scale(1.2);
+    }
+    
+    .gallery-dot.active {
+      background: #dc2626;
+    }
+    
+    .gallery-caption {
+      color: #666;
+      font-size: 0.9rem;
+      margin-top: 10px;
+      font-style: italic;
+    }
+    
+    .submit-photo-btn {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(220,38,38,0.4);
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+      font-family: inherit;
+    }
+    
+    .submit-photo-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(220,38,38,0.5);
+    }
+    
     .music-toggle {
       position: fixed;
       bottom: 20px;
@@ -797,6 +897,9 @@
       }
       .buy-cta-content {
         text-align: center;
+      }
+      .gallery-container {
+        max-width: 100%;
       }
     }
   </style>
@@ -951,6 +1054,29 @@
       </p>
     </div>
     
+    <!-- Photo Gallery -->
+    <div class="photo-gallery">
+      <h3 class="christmas-font">📸 Santa Sightings from the Community</h3>
+      <div class="gallery-container">
+        <img src="tmp1.png" alt="Santa sighting 1" class="gallery-image active" data-caption="📸 Hayley Sperling / City Cast Madison">
+        <img src="tmp2.png" alt="Santa sighting 2" class="gallery-image" data-caption="📸 Hayley Sperling / City Cast Madison">
+        <img src="tmp3.png" alt="Santa sighting 3" class="gallery-image" data-caption="📸 Hayley Sperling / City Cast Madison">
+      </div>
+      <div class="gallery-dots">
+        <button class="gallery-dot active" data-index="0"></button>
+        <button class="gallery-dot" data-index="1"></button>
+        <button class="gallery-dot" data-index="2"></button>
+      </div>
+      <p class="gallery-caption" id="gallery-caption">📸 Hayley Sperling / City Cast Madison</p>
+      <a 
+        href="https://docs.google.com/forms/d/e/1FAIpQLScIcSf0HSPHdLqDRRCej7Y8zai7PumzFmyHy97E4iPlcJD--A/viewform?usp=publish-editor" 
+        target="_blank" 
+        class="submit-photo-btn"
+      >
+        📷 Submit Your Santa Photo!
+      </a>
+    </div>
+    
   </div>
   
   <footer>
@@ -1100,10 +1226,58 @@
       });
     }
     
+    // Photo Gallery functionality
+    function setupPhotoGallery() {
+      const images = document.querySelectorAll('.gallery-image');
+      const dots = document.querySelectorAll('.gallery-dot');
+      const caption = document.getElementById('gallery-caption');
+      let currentIndex = 0;
+      let intervalId;
+      
+      function showImage(index) {
+        images.forEach((img, i) => {
+          img.classList.toggle('active', i === index);
+        });
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === index);
+        });
+        // Update caption from data attribute
+        caption.textContent = images[index].dataset.caption || '';
+        currentIndex = index;
+      }
+      
+      function nextImage() {
+        const next = (currentIndex + 1) % images.length;
+        showImage(next);
+      }
+      
+      function startAutoRotate() {
+        intervalId = setInterval(nextImage, 3000);
+      }
+      
+      function resetAutoRotate() {
+        clearInterval(intervalId);
+        startAutoRotate();
+      }
+      
+      // Click on dots to navigate
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          const index = parseInt(dot.dataset.index);
+          showImage(index);
+          resetAutoRotate();
+        });
+      });
+      
+      // Start auto-rotation
+      startAutoRotate();
+    }
+    
     document.addEventListener('DOMContentLoaded', async () => {
       initMap();
       createSnowflakes();
       setupMusicToggle();
+      setupPhotoGallery();
       
       try {
         santas = await loadSantasFromSheet();
