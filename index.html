@@ -26,7 +26,7 @@
     
     body {
       font-family: 'Nunito', system-ui, sans-serif;
-      background: linear-gradient(180deg, #1a4731 0%, #14532d 50%, #0f3d22 100%);
+      background: linear-gradient(180deg, #1e5a3a 0%, #1a5235 25%, #155230 50%, #104a28 75%, #0b3d1f 100%);
       min-height: 100vh;
       color: #333;
     }
@@ -35,19 +35,45 @@
       font-family: 'Mountains of Christmas', cursive;
     }
     
-    /* Snow animation */
-    .snowflake {
+    /* Snow animation with horizontal drift - BEHIND content */
+    #snow-container {
       position: fixed;
-      color: #fff;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 1;
-      animation: snow linear infinite;
+      overflow: hidden;
+    }
+    
+    .snowflake {
+      position: absolute;
+      top: -20px;
+      color: #fff;
+      pointer-events: none;
+      animation: snow-drift linear infinite;
       text-shadow: 0 0 5px rgba(255,255,255,0.8);
     }
     
-    @keyframes snow {
-      0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(360deg); opacity: 0.6; }
+    @keyframes snow-drift {
+      0% { 
+        transform: translateY(0) translateX(0) rotate(0deg); 
+        opacity: 1; 
+      }
+      25% {
+        transform: translateY(25vh) translateX(25px) rotate(90deg);
+      }
+      50% {
+        transform: translateY(50vh) translateX(-15px) rotate(180deg);
+      }
+      75% {
+        transform: translateY(75vh) translateX(30px) rotate(270deg);
+      }
+      100% { 
+        transform: translateY(105vh) translateX(10px) rotate(360deg); 
+        opacity: 0.6; 
+      }
     }
     
     @keyframes glow {
@@ -61,13 +87,8 @@
     }
     
     @keyframes twinkle {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0%, 100% { opacity: 1; filter: brightness(1); }
+      50% { opacity: 0.4; filter: brightness(0.6); }
     }
     
     @keyframes sway {
@@ -75,38 +96,145 @@
       50% { transform: rotate(3deg); }
     }
     
-    /* Decorative lights */
-    .lights {
+    /* Sparkle effect for hover */
+    @keyframes sparkle {
+      0%, 100% { 
+        opacity: 0;
+        transform: scale(0) rotate(0deg);
+      }
+      50% { 
+        opacity: 1;
+        transform: scale(1) rotate(180deg);
+      }
+    }
+    
+    .sparkle-container {
+      position: relative;
+    }
+    
+    .sparkle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 20;
+    }
+    
+    .sparkle::before,
+    .sparkle::after {
+      content: '';
+      position: absolute;
+      background: #fbbf24;
+      border-radius: 2px;
+    }
+    
+    .sparkle::before {
+      width: 100%;
+      height: 2px;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+    }
+    
+    .sparkle::after {
+      width: 2px;
+      height: 100%;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+    }
+    
+    /* Christmas lights with cord */
+    .lights-container {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      height: 20px;
+      height: 45px;
+      z-index: 5;
+      overflow: hidden;
+    }
+    
+    .lights-cord {
+      position: absolute;
+      top: 8px;
+      left: -20px;
+      right: -20px;
+      height: 40px;
+      pointer-events: none;
+    }
+    
+    .cord-path {
+      fill: none;
+      stroke: #1a1a1a;
+      stroke-width: 3;
+    }
+    
+    .lights {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 45px;
       display: flex;
       justify-content: space-around;
-      z-index: 5;
+      align-items: flex-start;
       padding: 0 10px;
     }
     
-    .light {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      margin-top: 5px;
-      animation: twinkle 1s ease-in-out infinite;
+    .light-bulb {
+      position: relative;
+      margin-top: var(--bulb-offset, 12px);
     }
     
-    .light:nth-child(4n+1) { background: #ef4444; animation-delay: 0s; }
-    .light:nth-child(4n+2) { background: #22c55e; animation-delay: 0.25s; }
-    .light:nth-child(4n+3) { background: #3b82f6; animation-delay: 0.5s; }
-    .light:nth-child(4n) { background: #eab308; animation-delay: 0.75s; }
+    .light-bulb::before {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 8px;
+      background: #2a2a2a;
+      border-radius: 2px 2px 0 0;
+    }
+    
+    .light {
+      width: 14px;
+      height: 18px;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      animation: twinkle 1.5s ease-in-out infinite;
+      box-shadow: 0 0 10px var(--light-color), 0 0 20px var(--light-color), 0 0 30px var(--light-color);
+    }
+    
+    .light-bulb:nth-child(4n+1) .light { 
+      --light-color: #ef4444;
+      background: radial-gradient(circle at 30% 30%, #ff6b6b, #ef4444, #b91c1c);
+      animation-delay: 0s; 
+    }
+    .light-bulb:nth-child(4n+2) .light { 
+      --light-color: #22c55e;
+      background: radial-gradient(circle at 30% 30%, #4ade80, #22c55e, #15803d);
+      animation-delay: 0.4s; 
+    }
+    .light-bulb:nth-child(4n+3) .light { 
+      --light-color: #3b82f6;
+      background: radial-gradient(circle at 30% 30%, #60a5fa, #3b82f6, #1d4ed8);
+      animation-delay: 0.8s; 
+    }
+    .light-bulb:nth-child(4n) .light { 
+      --light-color: #eab308;
+      background: radial-gradient(circle at 30% 30%, #fde047, #eab308, #a16207);
+      animation-delay: 1.2s; 
+    }
     
     /* Header */
     header {
       position: relative;
       z-index: 10;
       text-align: center;
-      padding: 40px 16px 20px;
+      padding: 55px 16px 20px;
     }
     
     .header-row {
@@ -176,7 +304,17 @@
       border-radius: 50px;
       border: 4px solid #fbbf24;
       animation: glow 2s ease-in-out infinite;
+      position: relative;
     }
+    
+    .title-badge:hover .sparkle {
+      animation: sparkle 0.6s ease-out forwards;
+    }
+    
+    .title-badge .sparkle:nth-child(1) { top: -8px; left: 15%; animation-delay: 0s; }
+    .title-badge .sparkle:nth-child(2) { top: 50%; right: -8px; animation-delay: 0.1s; }
+    .title-badge .sparkle:nth-child(3) { bottom: -8px; left: 40%; animation-delay: 0.2s; }
+    .title-badge .sparkle:nth-child(4) { top: 30%; left: -8px; animation-delay: 0.15s; }
     
     .title-badge h1 {
       font-size: 1.8rem;
@@ -197,16 +335,19 @@
       text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
     }
     
+    /* Frosted glass counter */
     .counter {
       display: inline-block;
       background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       padding: 12px 28px;
       border-radius: 30px;
       margin-top: 12px;
       color: #fff;
-      border: 2px solid rgba(255,255,255,0.2);
+      border: 2px solid rgba(255,255,255,0.25);
       font-size: 1.2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
     }
     
     .counter .count {
@@ -233,7 +374,17 @@
       box-shadow: 0 12px 40px rgba(0,0,0,0.3);
       border: 5px solid #dc2626;
       margin-bottom: 20px;
+      position: relative;
     }
+    
+    .map-container:hover .sparkle {
+      animation: sparkle 0.8s ease-out forwards;
+    }
+    
+    .map-container .sparkle:nth-child(1) { top: 8px; left: 8px; }
+    .map-container .sparkle:nth-child(2) { top: 8px; right: 8px; animation-delay: 0.1s; }
+    .map-container .sparkle:nth-child(3) { bottom: 8px; right: 8px; animation-delay: 0.2s; }
+    .map-container .sparkle:nth-child(4) { bottom: 8px; left: 8px; animation-delay: 0.15s; }
     
     .map-header {
       padding: 14px 18px;
@@ -283,13 +434,26 @@
       border-radius: 16px;
       padding: 18px;
       margin-bottom: 16px;
-      border: 3px solid #fca5a5;
+      border: 3px solid #dc2626;
       display: none;
       align-items: center;
       gap: 14px;
       flex-wrap: wrap;
       box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      position: relative;
+      transition: transform 0.2s ease;
     }
+    
+    .selected-santa:hover {
+      transform: translateY(-2px);
+    }
+    
+    .selected-santa:hover .sparkle {
+      animation: sparkle 0.6s ease-out forwards;
+    }
+    
+    .selected-santa .sparkle:nth-child(1) { top: 8px; right: 20px; }
+    .selected-santa .sparkle:nth-child(2) { bottom: 8px; left: 80px; animation-delay: 0.1s; }
     
     .selected-santa.visible {
       display: flex;
@@ -338,11 +502,25 @@
       background: linear-gradient(135deg, #fff 0%, #f0fdf4 100%);
       border-radius: 20px;
       padding: 28px;
-      border: 4px solid #166534;
+      border: 4px solid #dc2626;
       text-align: center;
       margin-bottom: 16px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      position: relative;
+      transition: transform 0.2s ease;
     }
+    
+    .submit-cta:hover {
+      transform: translateY(-3px);
+    }
+    
+    .submit-cta:hover .sparkle {
+      animation: sparkle 0.6s ease-out forwards;
+    }
+    
+    .submit-cta .sparkle:nth-child(1) { top: 12px; left: 12px; }
+    .submit-cta .sparkle:nth-child(2) { top: 12px; right: 12px; animation-delay: 0.1s; }
+    .submit-cta .sparkle:nth-child(3) { bottom: 12px; left: 50%; animation-delay: 0.2s; }
     
     .submit-cta h2 {
       margin-bottom: 10px;
@@ -382,7 +560,7 @@
       background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
       border-radius: 20px;
       padding: 24px;
-      border: 4px solid #f59e0b;
+      border: 4px solid #dc2626;
       text-align: center;
       box-shadow: 0 6px 20px rgba(0,0,0,0.15);
       display: flex;
@@ -390,13 +568,26 @@
       align-items: center;
       justify-content: center;
       gap: 20px;
+      position: relative;
+      transition: transform 0.2s ease;
     }
+    
+    .buy-cta:hover {
+      transform: translateY(-3px);
+    }
+    
+    .buy-cta:hover .sparkle {
+      animation: sparkle 0.6s ease-out forwards;
+    }
+    
+    .buy-cta .sparkle:nth-child(1) { top: 12px; right: 30px; }
+    .buy-cta .sparkle:nth-child(2) { bottom: 12px; left: 30px; animation-delay: 0.15s; }
     
     .buy-cta-image {
       width: 120px;
       height: 120px;
       object-fit: cover;
-      border-radius: 16px;
+      border-radius: 20px;
       border: 3px solid #f59e0b;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
@@ -438,6 +629,34 @@
     .buy-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(245,158,11,0.5);
+    }
+    
+    /* Suggestion box */
+    .suggestion-box {
+      background: rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 18px 24px;
+      border: 2px solid rgba(255,255,255,0.2);
+      text-align: center;
+      margin-top: 16px;
+    }
+    
+    .suggestion-box p {
+      color: rgba(255,255,255,0.9);
+      margin: 0;
+      font-size: 1.1rem;
+      font-family: 'Mountains of Christmas', cursive;
+      font-weight: 700;
+    }
+    
+    .suggestion-box a {
+      color: #fbbf24;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    
+    .suggestion-box a:hover {
+      text-decoration: underline;
     }
     
     /* Footer */
@@ -491,6 +710,7 @@
       margin-bottom: 16px;
       text-align: center;
       display: none;
+      border: 2px solid #dc2626;
     }
     
     .error-message.visible {
@@ -514,17 +734,37 @@
 </head>
 <body>
   
-  <!-- Christmas lights -->
-  <div class="lights">
-    <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
-    <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
-    <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
-    <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
-    <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
-  </div>
-  
-  <!-- Snowflakes -->
+  <!-- Snowflakes - behind content -->
   <div id="snow-container"></div>
+  
+  <!-- Christmas lights with cord -->
+  <div class="lights-container">
+    <svg class="lights-cord" viewBox="0 0 1200 45" preserveAspectRatio="none">
+      <path class="cord-path" d="M-20,8 Q30,25 60,18 Q90,11 120,22 Q150,33 180,20 Q210,7 240,24 Q270,41 300,18 Q330,5 360,22 Q390,39 420,18 Q450,5 480,24 Q510,43 540,18 Q570,3 600,22 Q630,41 660,18 Q690,5 720,24 Q750,43 780,18 Q810,3 840,22 Q870,41 900,18 Q930,5 960,24 Q990,43 1020,18 Q1050,3 1080,22 Q1110,41 1140,18 Q1170,5 1220,20" />
+    </svg>
+    <div class="lights">
+      <div class="light-bulb" style="--bulb-offset: 18px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 10px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 20px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 8px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 22px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 6px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 20px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 4px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 22px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 6px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 20px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 4px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 22px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 8px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 18px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 4px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 20px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 10px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 18px"><div class="light"></div></div>
+      <div class="light-bulb" style="--bulb-offset: 6px"><div class="light"></div></div>
+    </div>
+  </div>
   
   <!-- Header -->
   <header>
@@ -536,7 +776,11 @@
           class="hero-image"
         >
       </div>
-      <div class="title-badge christmas-font">
+      <div class="title-badge christmas-font sparkle-container">
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
         <span class="santa-icon">🎅</span>
         <h1>Madison Giant Santa Tracker</h1>
         <span class="santa-icon" style="animation-delay: 0.3s">🎅</span>
@@ -555,7 +799,11 @@
     <div class="error-message" id="error-message"></div>
     
     <!-- Map -->
-    <div class="map-container">
+    <div class="map-container sparkle-container">
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
       <div class="map-header">🗺️ Madison, WI — Click a Santa for details!</div>
       <div id="map">
         <div class="loading-overlay" id="loading">
@@ -566,7 +814,9 @@
     </div>
     
     <!-- Selected Santa Detail -->
-    <div class="selected-santa" id="selected-santa">
+    <div class="selected-santa sparkle-container" id="selected-santa">
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
       <span class="santa-emoji">🎅</span>
       <div class="info">
         <div class="address" id="selected-address"></div>
@@ -576,7 +826,10 @@
     </div>
     
     <!-- Submit CTA -->
-    <div class="submit-cta">
+    <div class="submit-cta sparkle-container">
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
       <h2 class="christmas-font">🎅 Spot a Giant Santa?</h2>
       <p>Help us find ALL the 12-foot inflatable Santas in Madison!</p>
       <a 
@@ -589,14 +842,14 @@
     </div>
     
     <!-- Buy CTA -->
-    <div class="buy-cta">
-<img 
-  src="https://products.blains.com/600/160/1600701-2.webp" 
-  alt="12-foot Inflatable Santa" 
-  class="buy-cta-image"
-  style="transform: scale(1.15);"
->
-
+    <div class="buy-cta sparkle-container">
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <img 
+        src="https://i5.walmartimages.com/asr/4b353133-bf6c-45d0-a59d-b4cb0cf1ed24.d9fa0f41e9e633bc5a963c70ce40c1d8.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF" 
+        alt="12-foot Inflatable Santa" 
+        class="buy-cta-image"
+      >
       <div class="buy-cta-content">
         <h3>🛒 Want Your Own Giant Santa?</h3>
         <p>Join the movement! Get a 12-foot inflatable Santa and put Madison on the map.</p>
@@ -611,20 +864,12 @@
     </div>
     
     <!-- Suggestion Box -->
-    <div style="
-      background: rgba(255,255,255,0.1);
-      border-radius: 16px;
-      padding: 16px 20px;
-      border: 2px solid rgba(255,255,255,0.2);
-      text-align: center;
-      margin-top: 16px;
-    ">
-      <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.95rem;">
+    <div class="suggestion-box">
+      <p>
         💡 Have a suggestion for this site? 
         <a 
           href="https://docs.google.com/forms/d/e/1FAIpQLSduXTtvsGlcMM5QoXGG3968qgXT7_x9pKDFm0wio_2yq41c_A/viewform" 
           target="_blank"
-          style="color: #fbbf24; font-weight: 600; text-decoration: none;"
         >Let us know!</a>
       </p>
     </div>
@@ -742,19 +987,19 @@
       el.classList.add('visible');
     }
     
-    // ============ SNOW EFFECT ============
+    // ============ SNOW EFFECT WITH HORIZONTAL DRIFT ============
     function createSnowflakes() {
       const container = document.getElementById('snow-container');
       const flakes = ['❄', '❅', '❆', '✻', '✼'];
       
-      for (let i = 0; i < 60; i++) {
+      for (let i = 0; i < 70; i++) {
         const flake = document.createElement('div');
         flake.className = 'snowflake';
         flake.textContent = flakes[Math.floor(Math.random() * flakes.length)];
         flake.style.left = `${Math.random() * 100}%`;
-        flake.style.fontSize = `${8 + Math.random() * 16}px`;
-        flake.style.animationDuration = `${4 + Math.random() * 8}s`;
-        flake.style.animationDelay = `${Math.random() * 5}s`;
+        flake.style.fontSize = `${10 + Math.random() * 16}px`;
+        flake.style.animationDuration = `${6 + Math.random() * 10}s`;
+        flake.style.animationDelay = `${Math.random() * 8}s`;
         flake.style.opacity = 0.6 + Math.random() * 0.4;
         container.appendChild(flake);
       }
