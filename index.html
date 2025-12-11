@@ -638,66 +638,11 @@
     // ============ CONFIGURATION ============
     const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRdG78w6csiqzQtWUCGQGTCCaOSB_WDrVk2yGeITPcoXWi98jtQZmcU6WcIU_cQ5uxA0xCEcgUwdY5i/pub?output=csv';
     
-    // Cache key for geocoded addresses
-    const GEOCODE_CACHE_KEY = 'santa_tracker_geocode_cache';
-    
     // ============ STATE ============
     let santas = [];
     let selectedSanta = null;
     let map;
     let markers = [];
-    
-    // ============ GEOCODE CACHE ============
-    function getGeocodeCache() {
-      try {
-        return JSON.parse(localStorage.getItem(GEOCODE_CACHE_KEY)) || {};
-      } catch {
-        return {};
-      }
-    }
-    
-    function saveGeocodeCache(cache) {
-      try {
-        localStorage.setItem(GEOCODE_CACHE_KEY, JSON.stringify(cache));
-      } catch {
-        // localStorage might be full or disabled
-      }
-    }
-    
-    // ============ GEOCODING ============
-    async function geocodeAddress(address) {
-      const cache = getGeocodeCache();
-      const cacheKey = address.toLowerCase().trim();
-      
-      if (cache[cacheKey]) {
-        return cache[cacheKey];
-      }
-      
-      const query = encodeURIComponent(`${address}, Madison, WI`);
-      try {
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=1`,
-          { headers: { 'User-Agent': 'MadisonSantaTracker/1.0' } }
-        );
-        const data = await response.json();
-        
-        if (data.length > 0) {
-          const result = {
-            lat: parseFloat(data[0].lat),
-            lng: parseFloat(data[0].lon)
-          };
-          
-          cache[cacheKey] = result;
-          saveGeocodeCache(cache);
-          
-          return result;
-        }
-      } catch (err) {
-        console.error('Geocoding error:', err);
-      }
-      
-      return null;
-    }
     
     // ============ LOAD DATA FROM GOOGLE SHEET ============
     async function loadSantasFromSheet() {
@@ -705,48 +650,19 @@
         Papa.parse(GOOGLE_SHEET_CSV_URL, {
           download: true,
           header: true,
-          complete: async (results) => {
-            console.log('CSV loaded:', results.data);
-            
-            // Filter for rows with an address
-            const rows = results.data.filter(row => {
-              const address = row['Address'] || row['address'] || row['ADDRESS'] || '';
-              return address.trim() !== '';
-            });
-            
-            console.log('Rows with addresses:', rows);
-            
-            // Geocode each address with rate limiting
-            const santaList = [];
-            for (let i = 0; i < rows.length; i++) {
-              const row = rows[i];
-              const address = row['Address'] || row['address'] || row['ADDRESS'];
-              const name = row['Your Name'] || row['Name'] || row['name'] || row['YOUR NAME'] || 'Anonymous Elf';
-              
-              // Rate limit: wait 300ms between geocode requests
-              if (i > 0) {
-                await new Promise(r => setTimeout(r, 300));
-              }
-              
-              const coords = await geocodeAddress(address);
-              
-              if (coords) {
-                santaList.push({
-                  id: i + 1,
-                  lat: coords.lat,
-                  lng: coords.lng,
-                  address: address,
-                  submitter: name || 'Anonymous Elf'
-                });
-              }
-            }
-            
+          complete: (results) => {
+            const santaList = results.data
+              .filter(row => row['Latitude'] && row['Longitude'])
+              .map((row, i) => ({
+                id: i + 1,
+                lat: parseFloat(row['Latitude']),
+                lng: parseFloat(row['Longitude']),
+                address: row['Address'] || '',
+                submitter: row['Your name'] || 'Anonymous Elf'
+              }));
             resolve(santaList);
           },
-          error: (error) => {
-            console.error('CSV parse error:', error);
-            reject(error);
-          }
+          error: reject
         });
       });
     }
