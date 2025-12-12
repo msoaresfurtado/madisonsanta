@@ -1141,7 +1141,7 @@
     }
     
     function initMap() {
-      map = L.map('map').setView([43.0731, -89.3812], 14);
+      map = L.map('map').setView([43.0731, -89.3812], 12);
       
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
@@ -1174,11 +1174,6 @@
         marker.on('click', () => selectSanta(santa));
         markers.push(marker);
       });
-      
-      if (markers.length > 0) {
-        const group = L.featureGroup(markers);
-        map.fitBounds(group.getBounds().pad(0.1));
-      }
     }
     
     function selectSanta(santa) {
