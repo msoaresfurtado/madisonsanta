@@ -1150,8 +1150,8 @@
     function initMap() {
       map = L.map('map').setView([43.0625, -89.418], 12.3);
       
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap contributors © CARTO'
       }).addTo(map);
     }
     
