@@ -25,10 +25,46 @@
       background: linear-gradient(180deg, #1e5a3a 0%, #1a5235 25%, #155230 50%, #104a28 75%, #0b3d1f 100%);
       min-height: 100vh;
       color: #333;
+      overflow-x: hidden;
     }
     
     .christmas-font {
       font-family: 'Mountains of Christmas', cursive;
+    }
+    
+    /* Flying Santa Sleigh */
+    .santa-sleigh {
+      position: fixed;
+      top: 5%;
+      right: -500px;
+      z-index: 1000;
+      pointer-events: none;
+      animation: flyAcross 18s linear infinite;
+    }
+
+    .santa-sleigh img {
+      width: 400px;
+      height: auto;
+    }
+
+    @keyframes flyAcross {
+      0% {
+        right: -500px;
+        top: 3%;
+      }
+      25% {
+        top: 8%;
+      }
+      50% {
+        top: 5%;
+      }
+      75% {
+        top: 10%;
+      }
+      100% {
+        right: 110%;
+        top: 6%;
+      }
     }
     
     #snow-container {
@@ -916,10 +952,18 @@
       .gallery-container {
         max-width: 100%;
       }
+      .santa-sleigh img {
+        width: 250px;
+      }
     }
   </style>
 </head>
 <body>
+  
+  <!-- Flying Santa Sleigh -->
+  <div class="santa-sleigh">
+    <img src="santa-sleigh.png" alt="Santa Sleigh">
+  </div>
   
   <div id="snow-container"></div>
   
