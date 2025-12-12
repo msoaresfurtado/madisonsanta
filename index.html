@@ -368,6 +368,13 @@
       animation: pulsate 2s ease-in-out infinite;
     }
     
+    .today-count {
+      font-size: 0.9rem;
+      margin-top: 6px;
+      color: #cafadd;
+      opacity: 0.9;
+    }
+    
     .emoji-large {
       font-size: 2.2rem;
     }
@@ -974,6 +981,7 @@
     <p class="subtitle">✨ Mapping every glorious 12-foot inflatable Santa in the city! ✨</p>
     <div class="counter">
       <span class="emoji-large">🎄</span> <span class="count" id="santa-count">0</span> Santas spotted! <span class="emoji-large">🎄</span>
+      <div class="today-count" id="today-count"></div>
     </div>
   </header>
   
@@ -1121,7 +1129,8 @@
                 lat: parseFloat(row['Latitude']),
                 lng: parseFloat(row['Longitude']),
                 address: row['Address'] || '',
-                submitter: row['Your name'] || 'Anonymous Elf'
+                submitter: row['Your name'] || 'Anonymous Elf',
+                timestamp: row['Timestamp'] || ''
               }));
             resolve(santaList);
           },
@@ -1185,6 +1194,21 @@
     
     function updateCounter() {
       document.getElementById('santa-count').textContent = santas.length;
+      
+      // Count today's submissions
+      const today = new Date().toLocaleDateString('en-US');
+      const todayCount = santas.filter(santa => {
+        if (!santa.timestamp) return false;
+        const submissionDate = new Date(santa.timestamp).toLocaleDateString('en-US');
+        return submissionDate === today;
+      }).length;
+      
+      const todayEl = document.getElementById('today-count');
+      if (todayCount > 0) {
+        todayEl.textContent = `🎁 ${todayCount} spotted today!`;
+      } else {
+        todayEl.textContent = '';
+      }
     }
     
     function showError(message) {
