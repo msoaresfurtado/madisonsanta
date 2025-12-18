@@ -927,15 +927,6 @@
       font-size: 32px;
       filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.4));
       cursor: pointer;
-      transition: transform 0.2s;
-      animation: santa-wiggle 2s ease-in-out infinite;
-    }
-    
-    @keyframes santa-wiggle {
-      0%, 100% { transform: translate(0, 0); }
-      25% { transform: translate(var(--wiggle-x, 2px), var(--wiggle-y, -2px)); }
-      50% { transform: translate(var(--wiggle-x2, -1px), var(--wiggle-y2, 1px)); }
-      75% { transform: translate(var(--wiggle-x3, 1px), var(--wiggle-y3, 2px)); }
     }
 
     @media (max-width: 500px) {
@@ -1205,18 +1196,9 @@
       markers = [];
       
       santas.forEach(santa => {
-        // Random wiggle values for each santa
-        const wiggleX = (Math.random() * 4 - 1.5).toFixed(1);
-        const wiggleY = (Math.random() * 4 - 1.5).toFixed(1);
-        const wiggleX2 = (Math.random() * 4 - 1.5).toFixed(1);
-        const wiggleY2 = (Math.random() * 4 - 1.5).toFixed(1);
-        const wiggleX3 = (Math.random() * 4 - 1.5).toFixed(1);
-        const wiggleY3 = (Math.random() * 4 - 1.5).toFixed(1);
-        const delay = (Math.random() * 2).toFixed(1);
-        
         const santaIcon = L.divIcon({
           className: 'santa-marker',
-          html: `<div class="santa-marker-icon" style="--wiggle-x: ${wiggleX}px; --wiggle-y: ${wiggleY}px; --wiggle-x2: ${wiggleX2}px; --wiggle-y2: ${wiggleY2}px; --wiggle-x3: ${wiggleX3}px; --wiggle-y3: ${wiggleY3}px; animation-delay: ${delay}s;">🎅</div>`,
+          html: `<div class="santa-marker-icon">🎅</div>`,
           iconSize: [36, 36],
           iconAnchor: [18, 36],
           popupAnchor: [0, -36]
