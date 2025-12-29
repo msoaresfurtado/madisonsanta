@@ -587,6 +587,13 @@
       font-size: 1.05rem;
     }
     
+    .submit-cta .closed-note {
+      color: #666;
+      font-size: 0.95rem;
+      margin-top: 12px;
+      font-style: italic;
+    }
+    
     .submit-btn {
       display: inline-block;
       padding: 16px 36px;
@@ -606,6 +613,17 @@
     .submit-btn:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 25px rgba(220,38,38,0.5);
+    }
+    
+    .submit-btn.disabled {
+      background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+      cursor: not-allowed;
+      box-shadow: 0 4px 12px rgba(107,114,128,0.3);
+    }
+    
+    .submit-btn.disabled:hover {
+      transform: none;
+      box-shadow: 0 4px 12px rgba(107,114,128,0.3);
     }
     
     .buy-cta {
@@ -1023,8 +1041,8 @@
     </div>
     <p class="subtitle">✨ Mapping every glorious 12-foot inflatable Santa in the city! ✨</p>
     <div class="counter">
-      <span class="emoji-large"></span> <span class="count" id="santa-count">0</span> Santas spotted! <span class="emoji-large"></span>
-      <div class="today-count" id="today-count"></div>
+      <span class="emoji-large"></span> <span class="count" id="santa-count">115</span> Santas spotted in 2025! <span class="emoji-large"></span>
+      <div class="today-count" id="today-count">✅ Final count (duplicates removed automatically)</div>
     </div>
   </header>
   
@@ -1061,15 +1079,13 @@
       <div class="sparkle"></div>
       <div class="sparkle"></div>
       <div class="sparkle"></div>
-      <h2 class="christmas-font">🎅 Spot a Giant Santa?</h2>
-      <p>Help us find ALL the 12-foot inflatable Santas in Madison!</p>
-      <a 
-        href="https://docs.google.com/forms/d/e/1FAIpQLSeCsUBFgD1AVRr7pJVdaLkMY4WqREYR5rjgcOH6G-lbg5GC8Q/viewform" 
-        target="_blank" 
-        class="submit-btn"
-      >
-        📍 Submit a Sighting!
-      </a>
+      <h2 class="christmas-font">🎅 Submissions Closed for 2025!</h2>
+      <p>Thank you to everyone who helped us track <strong>115 giant Santas</strong> across Madison this holiday season!</p>
+      <p style="color: #166534; font-weight: 600; margin-bottom: 18px;">🙏 A huge thank you to all the Santa spotters, photo contributors, and everyone who shared this project with friends and neighbors. You made this community effort a success!</p>
+      <span class="submit-btn disabled">
+        ⏸️ Submissions Closed
+      </span>
+      <p class="closed-note">The tracker will reopen next winter so we can see how 2026 compares to 2025. See you then!</p>
     </div>
     
     <div class="buy-cta sparkle-container">
@@ -1082,7 +1098,7 @@
       >
       <div class="buy-cta-content">
         <h3>🛒 Want Your Own Giant Santa?</h3>
-        <p>Join the movement! Get your own 12-foot inflatable Santa and add it to the map.</p>
+        <p>Join the movement! Get your own 12-foot inflatable Santa and add it to the map next year.</p>
         <a 
           href="https://www.farmandfleet.com/products/1600701-gemmy-12-inflatable-santa.html" 
           target="_blank" 
@@ -1112,11 +1128,13 @@
         <img src="tmp1.png" alt="Santa sighting 1" class="gallery-image active" data-caption="📸 Hayley Sperling / City Cast Madison">
         <img src="tmp2.png" alt="Santa sighting 2" class="gallery-image" data-caption="📸 Hayley Sperling / City Cast Madison">
         <img src="tmp3.png" alt="Santa sighting 3" class="gallery-image" data-caption="📸 Hayley Sperling / City Cast Madison">
+        <img src="tmp4.png" alt="Santa sighting 4" class="gallery-image" data-caption="📸 Tina Meister">
       </div>
       <div class="gallery-dots">
         <button class="gallery-dot active" data-index="0"></button>
         <button class="gallery-dot" data-index="1"></button>
         <button class="gallery-dot" data-index="2"></button>
+        <button class="gallery-dot" data-index="3"></button>
       </div>
       <p class="gallery-caption" id="gallery-caption">📸 Hayley Sperling / City Cast Madison</p>
       <a 
@@ -1234,22 +1252,8 @@
     }
     
     function updateCounter() {
-      document.getElementById('santa-count').textContent = santas.length;
-      
-      // Count today's submissions
-      const today = new Date().toLocaleDateString('en-US');
-      const todayCount = santas.filter(santa => {
-        if (!santa.timestamp) return false;
-        const submissionDate = new Date(santa.timestamp).toLocaleDateString('en-US');
-        return submissionDate === today;
-      }).length;
-      
-      const todayEl = document.getElementById('today-count');
-      if (todayCount > 0) {
-        todayEl.textContent = `🎁 ${todayCount} spotted today!`;
-      } else {
-        todayEl.textContent = '';
-      }
+      // Counter is now static at 115
+      document.getElementById('santa-count').textContent = '115';
     }
     
     function showError(message) {
