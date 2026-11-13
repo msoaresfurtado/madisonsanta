@@ -5,6 +5,7 @@ let allSightings=[],map,markerLayer,filter='all',feedAvailable=false;
 function setupMap(){
  if(!window.L){$('map').textContent='The map could not load. You can still browse the sightings list below or add a sighting.';return;}
  map=L.map('map',{scrollWheelZoom:false}).setView([43.0625,-89.418],11);
+ map.createPane('santaMarkers').style.zIndex='610';
  markerLayer=L.layerGroup().addTo(map);
  const tiles=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',className:'vintage-tiles'}).addTo(map);
  let errors=0;
@@ -27,7 +28,7 @@ function showMarkers(){
    const name=document.createElement('p');name.textContent=`Spotted by ${s.name} · ${s.season}`;
    const link=document.createElement('a');link.href=directions;link.target='_blank';link.rel='noopener';link.textContent='Get directions ↗';
    box.append(heading,address,name,link);
-   L.marker([s.lat,s.lng],{title:`${title}: ${s.address}`,icon:L.divIcon({className:`sighting-marker ${s.type}`,html:emoji,iconSize:[36,42],iconAnchor:[18,36]})}).bindPopup(box).addTo(markerLayer);
+   L.marker([s.lat,s.lng],{pane:s.type==='santa'?'santaMarkers':'markerPane',title:`${title}: ${s.address}`,icon:L.divIcon({className:`sighting-marker ${s.type}`,html:emoji,iconSize:[36,42],iconAnchor:[18,36]})}).bindPopup(box).addTo(markerLayer);
   }
   const li=document.createElement('li'),link=document.createElement('a');link.href=directions;link.target='_blank';link.rel='noopener';link.textContent=`${emoji} ${s.address}`;li.append(link);list.append(li);
  }
