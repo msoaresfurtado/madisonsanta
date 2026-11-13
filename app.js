@@ -71,7 +71,7 @@ function setupMusic(){
  audio.addEventListener('error',()=>{status.textContent='The music could not load. Please try refreshing the page.';});
  $('volume').addEventListener('input',()=>{audio.volume=Number($('volume').value)/100;});
  audio.addEventListener('volumechange',()=>{$('volume').value=Math.round(audio.volume*100);});
- let waitingForGesture=true;
+ let waitingForGesture=false;
  const tryStart=()=>{if(!waitingForGesture)return;audio.play().then(()=>{waitingForGesture=false;}).catch(()=>{});};
  audio.addEventListener('playing',()=>{waitingForGesture=false;});
  document.addEventListener('pointerdown',event=>{if(!event.target.closest('.music-section'))tryStart();});
