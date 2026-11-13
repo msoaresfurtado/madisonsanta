@@ -8,3 +8,5 @@ h1{font-size:clamp(32px,4vw,48px);letter-spacing:-1.1px}.intro{padding-top:30px;
 
 /* A fine watercolor border, repeated at its natural proportions. */
 .masthead-art{height:125px;max-width:none;background:url("watercolor-garland.png") center -7px / 550px auto repeat-x}.garland{display:none}.flying-sleigh{top:72px;width:160px}@media(max-width:700px){.masthead-art{height:105px;background-size:440px auto}.flying-sleigh{top:57px;width:140px}}@media(prefers-reduced-motion:reduce){.flying-sleigh{top:72px}}
+/* Gentle sleigh bob, independent of its journey across the page. */
+.masthead-art{height:145px}.flying-sleigh{width:210px;top:68px;animation:fly 35s linear infinite,sleigh-bob 3.8s ease-in-out infinite;animation-delay:-8s,0s}@keyframes fly{from{left:100%}to{left:-300px}}@keyframes sleigh-bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-9px) rotate(1deg)}}@media(max-width:700px){.masthead-art{height:125px}.flying-sleigh{width:180px;top:55px}}@media(prefers-reduced-motion:reduce){.flying-sleigh{animation:none}}
