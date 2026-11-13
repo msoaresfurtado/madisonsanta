@@ -58,7 +58,7 @@ async function loadSightings(){
  }finally{$('refresh').disabled=false;showMarkers();}
 }
 function setupMotion(){
- for(let i=0;i<16;i++){const snow=document.createElement('img');snow.src='watercolor-snowflake.png';snow.alt='';snow.className='snowflake';snow.style.left=`${(i*6.3+2)%100}%`;snow.style.width=`${18+i%4*7}px`;snow.style.animationDuration=`${18+i%7*3}s`;snow.style.animationDelay=`-${i*2.7}s`;$('snowfall').append(snow);}
+ for(let i=0;i<32;i++){const snow=document.createElement('img');snow.src='watercolor-snowflake.png';snow.alt='';snow.className='snowflake';snow.style.left=`${(i*3.125+2)%100}%`;snow.style.width=`${18+i%4*7}px`;snow.style.animationDuration=`${22+i%7*3}s`;snow.style.animationDelay=`-${(i*.61803398875%1)*(22+i%7*3)}s`;$('snowfall').append(snow);}
 }
 function setupMusic(){
  const audio=$('holiday-audio'),button=$('music-toggle'),status=$('music-status');
@@ -77,6 +77,8 @@ function setupMusic(){
  tryStart();
 }
 async function start(){
+ const mobileLayout=window.matchMedia('(max-width:700px)');
+ const syncExtras=()=>{$('community-extras').open=!mobileLayout.matches;};syncExtras();mobileLayout.addEventListener('change',syncExtras);
  setupMap();setupMotion();setupMusic();
  $('refresh').addEventListener('click',loadSightings);
  document.querySelectorAll('.filter').forEach(button=>button.addEventListener('click',()=>{filter=button.dataset.type;document.querySelectorAll('.filter').forEach(b=>{b.classList.toggle('active',b===button);b.setAttribute('aria-pressed',String(b===button));});showMarkers();}));
