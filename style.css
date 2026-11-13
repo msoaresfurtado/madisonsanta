@@ -30,3 +30,11 @@ html,body{overflow-x:clip}.snowfall{contain:strict;height:100dvh;max-height:100v
   .intro>p:not(.eyebrow),.intro .hero-actions{grid-column:1 / -1}
   .intro>p:not(.eyebrow){margin-top:8px}
 }
+
+/* Give the map heading and refresh control separate rows on phones. */
+@media(max-width:700px){
+  .map-section{margin-top:28px}
+  .map-section>.section-heading{flex-direction:column;align-items:stretch;gap:10px;margin-bottom:14px}
+  .map-section>.section-heading h2{margin:0;text-align:left;text-wrap:initial}
+  .map-section #refresh{align-self:flex-start;font-size:13px;padding:8px 12px}
+}
