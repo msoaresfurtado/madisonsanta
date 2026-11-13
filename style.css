@@ -20,3 +20,13 @@ html,body{overflow-x:clip}.snowfall{contain:strict;height:100dvh;max-height:100v
 @media(max-width:700px){h1,h2{text-wrap:balance}.wordmark span{max-width:none;white-space:nowrap}.shop-section h2{font-size:22px;text-wrap:balance}}
 .wordmark span{font:italic 400 15px/1.4 'Fraunces',Georgia,serif;letter-spacing:.1px;margin-top:5px;color:var(--muted);white-space:normal;max-width:none}@media(max-width:700px){.wordmark span{font-size:14px;letter-spacing:.1px;white-space:nowrap}}
 @media(max-width:700px){.stat-label{white-space:nowrap;font-size:clamp(8px,2.3vw,11px);letter-spacing:.35px}.stat{min-width:0;padding-inline:4px}}
+
+/* Reserve layout space for Santa so mobile copy never sits beneath the artwork. */
+@media(max-width:700px){
+  .intro{display:grid;grid-template-columns:85px minmax(0,1fr);column-gap:14px;row-gap:8px;align-items:center}
+  .intro .rocking-santa{position:static;grid-column:1;grid-row:1 / 3;justify-self:center;width:75px;height:125px}
+  .intro .eyebrow{grid-column:2;align-self:end;padding-left:0;margin:0}
+  .intro h1{grid-column:2;align-self:start;padding-left:0;margin:0 0 8px}
+  .intro>p:not(.eyebrow),.intro .hero-actions{grid-column:1 / -1}
+  .intro>p:not(.eyebrow){margin-top:8px}
+}
