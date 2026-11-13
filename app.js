@@ -62,13 +62,19 @@ function setupMotion(){
 }
 function setupMusic(){
  const audio=$('holiday-audio'),button=$('music-toggle'),status=$('music-status');
- audio.volume=.25;
+ audio.volume=.20;
  button.addEventListener('click',async()=>{if(!audio.paused){audio.pause();return;}try{await audio.play();}catch(e){status.textContent='Tap the audio player to start the music.';}});
  audio.addEventListener('playing',()=>{button.textContent='Ⅱ Pause music';button.setAttribute('aria-pressed','true');status.textContent='Playing softly in the background. Adjust the volume or pause any time.';});
  audio.addEventListener('pause',()=>{button.textContent='♪ Play holiday music';button.setAttribute('aria-pressed','false');status.textContent='Music paused.';});
  audio.addEventListener('error',()=>{status.textContent='The music could not load. Please try refreshing the page.';});
  $('volume').addEventListener('input',()=>{audio.volume=Number($('volume').value)/100;});
  audio.addEventListener('volumechange',()=>{$('volume').value=Math.round(audio.volume*100);});
+ let waitingForGesture=true;
+ const tryStart=()=>{if(!waitingForGesture)return;audio.play().then(()=>{waitingForGesture=false;}).catch(()=>{});};
+ audio.addEventListener('playing',()=>{waitingForGesture=false;});
+ document.addEventListener('pointerdown',event=>{if(!event.target.closest('.music-section'))tryStart();});
+ document.addEventListener('keydown',event=>{if(!event.target.closest('.music-section'))tryStart();});
+ tryStart();
 }
 async function start(){
  setupMap();setupMotion();setupMusic();
