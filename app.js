@@ -58,25 +58,17 @@ async function loadSightings(){
  }finally{$('refresh').disabled=false;showMarkers();}
 }
 function setupMotion(){
- const reduced=matchMedia('(prefers-reduced-motion: reduce)');let paused=reduced.matches;
- const apply=()=>{document.body.classList.toggle('motion-paused',paused);$('motion-toggle').textContent=paused?'Resume animation':'Pause animation';$('motion-toggle').setAttribute('aria-pressed',String(paused));};
- $('motion-toggle').addEventListener('click',()=>{paused=!paused;apply();});reduced.addEventListener('change',e=>{paused=e.matches;apply();});apply();
  for(let i=0;i<16;i++){const snow=document.createElement('img');snow.src='watercolor-snowflake.png';snow.alt='';snow.className='snowflake';snow.style.left=`${(i*6.3+2)%100}%`;snow.style.width=`${18+i%4*7}px`;snow.style.animationDuration=`${18+i%7*3}s`;snow.style.animationDelay=`-${i*2.7}s`;$('snowfall').append(snow);}
 }
 function setupMusic(){
- const button=$('music-toggle'),status=$('music-status');let widget,ready=false,playing=false,wanted=false,timer;
- const failed=()=>{clearTimeout(timer);button.disabled=false;button.textContent='♪ Play holiday music';status.textContent='Use the Play button in the SoundCloud player, or open the song on SoundCloud below.';};
- const api=document.createElement('script');api.src='https://w.soundcloud.com/player/api.js';api.onerror=failed;
- api.onload=()=>{widget=SC.Widget($('sc-widget'));
-  widget.bind(SC.Widget.Events.READY,()=>{ready=true;widget.setVolume(Number($('volume').value));if(wanted)widget.play();});
-  widget.bind(SC.Widget.Events.PLAY,()=>{playing=true;wanted=true;clearTimeout(timer);button.disabled=false;button.textContent='Ⅱ Pause music';button.setAttribute('aria-pressed','true');status.textContent='Playing softly in the background. Adjust the volume or pause any time.';});
-  widget.bind(SC.Widget.Events.PAUSE,()=>{playing=false;wanted=false;button.textContent='♪ Play holiday music';button.setAttribute('aria-pressed','false');status.textContent='Music paused.';});
-  widget.bind(SC.Widget.Events.FINISH,()=>{playing=false;wanted=false;button.textContent='♪ Play holiday music';button.setAttribute('aria-pressed','false');status.textContent='The song has finished. Press play to hear it again.';});
-  widget.bind(SC.Widget.Events.ERROR,failed);
- };
- document.head.append(api);
- button.addEventListener('click',()=>{if(playing){wanted=false;widget.pause();return;}wanted=true;status.textContent=ready?'Starting music…':'Loading the music player…';if(ready)widget.play();clearTimeout(timer);timer=setTimeout(()=>{if(!playing)failed();},8000);});
- $('volume').addEventListener('input',()=>{if(ready)widget.setVolume(Number($('volume').value));});
+ const audio=$('holiday-audio'),button=$('music-toggle'),status=$('music-status');
+ audio.volume=.25;
+ button.addEventListener('click',async()=>{if(!audio.paused){audio.pause();return;}try{await audio.play();}catch(e){status.textContent='Tap the audio player to start the music.';}});
+ audio.addEventListener('playing',()=>{button.textContent='Ⅱ Pause music';button.setAttribute('aria-pressed','true');status.textContent='Playing softly in the background. Adjust the volume or pause any time.';});
+ audio.addEventListener('pause',()=>{button.textContent='♪ Play holiday music';button.setAttribute('aria-pressed','false');status.textContent='Music paused.';});
+ audio.addEventListener('error',()=>{status.textContent='The music could not load. Please try refreshing the page.';});
+ $('volume').addEventListener('input',()=>{audio.volume=Number($('volume').value)/100;});
+ audio.addEventListener('volumechange',()=>{$('volume').value=Math.round(audio.volume*100);});
 }
 async function start(){
  setupMap();setupMotion();setupMusic();
